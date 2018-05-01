@@ -1,7 +1,6 @@
 /* eslint-disable class-methods-use-this */
 import { Buffer } from 'buffer';
 import { AsyncStorage } from 'react-native';
-import _ from 'lodash';
 
 const authKey = 'auth';
 const userKey = 'user';
@@ -11,14 +10,13 @@ class AuthService {
     AsyncStorage.multiGet([authKey, userKey], (err, val) => {
       if (err || !val) return cb(err);
 
-      const zippedObject = _.zipObject(val);
-      if (!zippedObject[authKey]) return cb();
+      if (!val[0]) return cb();
 
       const authInfo = {
         header: {
-          Authorization: `Basic ${zippedObject[authKey]}`,
+          Authorization: `Basic ${val[0][1]}`,
         },
-        user: JSON.parse(zippedObject[userKey]),
+        user: JSON.parse(val[1][1]),
       };
 
       return cb(null, authInfo);

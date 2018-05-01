@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, ActivityIndicator } from 'react-native';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
 
 import Login from './Login';
 import AuthService from './AuthService';
+import Container from './Container';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -48,13 +48,9 @@ export default class App extends React.Component {
   render() {
     let renderedComponent;
     if (this.state.checkingAuth) {
-      renderedComponent = (<ActivityIndicator
-        animating
-        size="large"
-        color="#0000ff"
-      />);
+      renderedComponent = <ActivityIndicator animating size="large" color="#0000ff" />;
     } else if (this.state.loggedIn) {
-      renderedComponent = <Text>{`Welcome ${this.state.user.name}!`}</Text>;
+      renderedComponent = <Container />;
     } else {
       renderedComponent = <Login onLoginSuccess={this.onLogin} />;
     }
