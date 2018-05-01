@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 20,
-    borderColor: '#222',
+    borderColor: 'rgba(200, 200, 200, 0.75)',
     borderWidth: 1,
   },
   rowImage: {
@@ -48,8 +48,10 @@ const renderRow = (rowItem) => {
   let { action } = rowItem.payload;
   if (rowItem.type === 'CreateEvent') {
     action = 'created';
-  } if (rowItem.type === 'ForkEvent') {
+  } else if (rowItem.type === 'ForkEvent') {
     action = 'forked';
+  } else if (rowItem.type === 'PushEvent') {
+    action = 'pushed to';
   } else if (action === 'started') {
     action = 'starred';
   }
@@ -77,7 +79,7 @@ export default class Feed extends Component {
     super(props);
 
     this.state = {
-      dataSource: [],
+      feedItems: [],
     };
 
     this.fetchFeed = this.fetchFeed.bind(this);
@@ -106,7 +108,7 @@ export default class Feed extends Component {
         .then(response => response.json())
         .then((results) => {
           this.setState({
-            dataSource: results.map((item, index) => {
+            feedItems: results.map((item, index) => {
               const newItem = Object.assign({}, item);
               newItem.key = index.toString();
               return newItem;
@@ -118,17 +120,17 @@ export default class Feed extends Component {
 
   render() {
     const {
-      dataSource,
+      feedItems,
     } = this.state;
 
-    if (dataSource.length < 1) {
+    if (feedItems.length < 1) {
       return <ActivityIndicator animating size="large" color="#0000ff" />;
     }
 
     return (
       <View>
         <FlatList
-          data={dataSource}
+          data={feedItems}
           renderItem={({ item }) => renderRow(item)}
         />
       </View>

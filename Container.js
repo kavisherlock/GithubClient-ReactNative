@@ -3,6 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import Tabbar from 'react-native-tabbar-bottom';
 
 import Feed from './Feed';
+import Search from './Search';
 
 const styles = StyleSheet.create({
   container: {
@@ -34,7 +35,7 @@ export default class Container extends React.Component {
     return (
       <View style={styles.container}>
         {currentTab === 'Feed' && <View style={styles.wrapper}><Feed /></View>}
-        {currentTab === 'Search' && <View style={styles.wrapper}><Text>Search</Text></View>}
+        {currentTab === 'Search' && <View style={styles.wrapper}><Search /></View>}
         {currentTab === 'Profile' && <View style={styles.wrapper}><Text>Profile</Text></View>}
         <Tabbar
           selectedIconColor="skyblue"
