@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { AppRegistry, View, TextInput, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 
-import AuthService from './AuthService';
-
 const styles = StyleSheet.create({
   search: {
     flex: 1,
@@ -29,6 +27,7 @@ const styles = StyleSheet.create({
   row: {
     flex: 1,
     padding: 20,
+    backgroundColor: 'rgba(240, 240, 240, 0.75)',
     borderColor: 'rgba(200, 200, 200, 0.75)',
     borderWidth: 1,
   },
@@ -79,7 +78,6 @@ export default class App extends Component {
       })
       .then(response => response.json())
       .then((results) => {
-        console.log(results);
         this.setState({
           searchResults: results.items.map((item, index) => {
             const newItem = Object.assign({}, item);

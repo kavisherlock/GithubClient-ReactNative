@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, NavigatorIOS, Platform } from 'react-native';
 import Tabbar from 'react-native-tabbar-bottom';
+import PropTypes from 'prop-types';
 
 import Feed from './Feed';
 import Search from './Search';
+import Profile from './Profile';
 
 const styles = StyleSheet.create({
   container: {
@@ -18,12 +20,16 @@ const styles = StyleSheet.create({
   },
 });
 
+const propTypes = {
+  currentUserId: PropTypes.string.isRequired,
+};
+
 export default class Container extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      currentTab: 'Feed',
+      currentTab: 'Profile',
     };
   }
 
@@ -34,9 +40,18 @@ export default class Container extends React.Component {
 
     return (
       <View style={styles.container}>
-        {currentTab === 'Feed' && <View style={styles.wrapper}><Feed /></View>}
+        {
+          currentTab === 'Feed' &&
+          <View style={styles.wrapper}>
+            {Platform.OS === 'ios' && <NavigatorIOS initialRoute={{ component: Feed, title: 'Feed' }} style={{ flex: 1 }} />}
+            {Platform.OS !== 'ios' && <Feed />}
+          </View>
+        }
         {currentTab === 'Search' && <View style={styles.wrapper}><Search /></View>}
-        {currentTab === 'Profile' && <View style={styles.wrapper}><Text>Profile</Text></View>}
+        {
+          currentTab === 'Profile' &&
+          <View style={styles.wrapper}><Profile userId={this.props.currentUserId} /></View>
+        }
         <Tabbar
           selectedIconColor="skyblue"
           stateFunc={(tab) => {
@@ -62,3 +77,5 @@ export default class Container extends React.Component {
     );
   }
 }
+
+Container.propTypes = propTypes;

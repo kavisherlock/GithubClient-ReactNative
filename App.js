@@ -50,7 +50,7 @@ export default class App extends React.Component {
     if (this.state.checkingAuth) {
       renderedComponent = <ActivityIndicator animating size="large" color="#0000ff" />;
     } else if (this.state.loggedIn) {
-      renderedComponent = <Container />;
+      renderedComponent = <Container currentUserId={this.state.user.login} />;
     } else {
       renderedComponent = <Login onLoginSuccess={this.onLogin} />;
     }

@@ -33,6 +33,7 @@
     "prop-types": "^15.6.1",
     "react": "16.3.0",
     "react-native": "~0.54.1",
-    "react-native-tabbar-bottom": "^1.0.4"
+    "react-native-tabbar-bottom": "^1.0.4",
+    "react-navigation": "^1.5.11"
   }
 }

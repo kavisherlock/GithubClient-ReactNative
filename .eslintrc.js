@@ -36,6 +36,7 @@ module.exports = {
             "always"
         ],
         "react/jsx-uses-vars": [2],
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "react/forbid-prop-types": "off"
     }
 };
