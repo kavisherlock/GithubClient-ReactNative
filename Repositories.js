@@ -1,33 +1,12 @@
 import React, { Component } from 'react';
-import { View, TextInput, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
-  search: {
-    flex: 1,
-  },
-  searchBar: {
-    padding: 20,
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  input: {
-    flex: 1,
-    padding: 15,
-    backgroundColor: '#fff',
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 5,
-  },
-  button: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'skyblue',
-    padding: 10,
-  },
   row: {
     flex: 1,
     padding: 20,
-    backgroundColor: 'rgba(240, 240, 240, 0.75)',
+    backgroundColor: 'white',
     borderColor: 'rgba(200, 200, 200, 0.75)',
     borderWidth: 1,
   },
@@ -56,20 +35,25 @@ const renderRow = rowItem => (
   </View>
 );
 
-export default class Search extends Component {
+const propTypes = {
+  repos_url: PropTypes.string.isRequired,
+};
+
+export default class Repositories extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      searchString: '',
-      searchResults: [],
+      repos: [],
     };
-
-    this.onSearch = this.onSearch.bind(this);
   }
 
-  onSearch() {
-    fetch(`https://api.github.com/search/repositories?q=${encodeURIComponent(this.state.searchString)}`)
+  componentWillMount() {
+    this.fetchRepos();
+  }
+
+  fetchRepos() {
+    fetch(this.props.repos_url)
       .then((response) => {
         if (response.status >= 200 && response.status < 300) {
           return response;
@@ -79,7 +63,7 @@ export default class Search extends Component {
       .then(response => response.json())
       .then((results) => {
         this.setState({
-          searchResults: results.items.map((item, index) => {
+          repos: results.map((item, index) => {
             const newItem = Object.assign({}, item);
             newItem.key = index.toString();
             return newItem;
@@ -89,27 +73,23 @@ export default class Search extends Component {
   }
 
   render() {
+    const {
+      repos,
+    } = this.state;
+
+    if (!repos) {
+      return <ActivityIndicator animating size="large" color="#0000ff" />;
+    }
+
     return (
-      <View style={styles.search}>
-        <View style={styles.searchBar}>
-          <TextInput
-            style={styles.input}
-            value={this.state.searchString}
-            onChangeText={text => this.setState({ searchString: text })}
-            placeholder="Enter Repository Name..."
-          />
-          <TouchableOpacity
-            style={styles.button}
-            onPress={this.onSearch}
-          >
-            <Text>Search</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.repositories}>
         <FlatList
-          data={this.state.searchResults}
+          data={repos}
           renderItem={({ item }) => renderRow(item)}
         />
       </View>
     );
   }
 }
+
+Repositories.propTypes = propTypes;

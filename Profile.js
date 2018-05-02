@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, ActivityIndicator } from 'react-native';
 import PropTypes from 'prop-types';
 
+import Repositories from './Repositories';
+
 const styles = StyleSheet.create({
   profile: {
     padding: 10,
@@ -28,6 +30,9 @@ const styles = StyleSheet.create({
   userInfo: {
     color: '#444',
     paddingBottom: 10,
+  },
+  repositories: {
+    marginTop: 20,
   },
 });
 
@@ -67,8 +72,6 @@ export default class Profile extends React.Component {
       .then((results) => {
         this.setState({ user: results });
       });
-
-    return userId;
   }
 
   render() {
@@ -92,6 +95,7 @@ export default class Profile extends React.Component {
         {user.blog && <Text style={styles.userInfo}>Blog: {user.blog}</Text>}
         {user.company && <Text style={styles.userInfo}>Company: {user.company}</Text>}
         {user.location && <Text style={styles.userInfo}>Location: {user.location}</Text>}
+        <Repositories style={styles.repositories} repos_url={user.repos_url} />
       </View>
     );
   }

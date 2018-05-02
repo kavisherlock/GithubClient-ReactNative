@@ -48,10 +48,7 @@ export default class Container extends React.Component {
           </View>
         }
         {currentTab === 'Search' && <View style={styles.wrapper}><Search /></View>}
-        {
-          currentTab === 'Profile' &&
-          <View style={styles.wrapper}><Profile userId={this.props.currentUserId} /></View>
-        }
+        {currentTab === 'Profile' && <View style={styles.wrapper}><Profile userId={this.props.currentUserId} /></View>}
         <Tabbar
           selectedIconColor="skyblue"
           stateFunc={(tab) => {
